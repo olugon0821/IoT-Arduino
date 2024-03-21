@@ -34,7 +34,7 @@ void loop() {
   bool stop = digitalRead(SWITCH_PIN2);
   
   if (start && !s1) {
-    isRunning = true;
+    s1 = true;
   }
   
   if (s1) {
@@ -42,7 +42,7 @@ void loop() {
   }
 
   if (stop) {
-    isRunning = false;
+    s1 = false;
     Stop();
   }
     
