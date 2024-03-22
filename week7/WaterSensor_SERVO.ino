@@ -16,7 +16,7 @@ void loop() {
   uint16_t mapped_value {map(WS,0,700,0,255)};
   Serial.println(mapped_value);
 
-  if(0 <= mapped_value && mapped_value <= 130){
+  if(1 <= mapped_value && mapped_value <= 130){
     for(int i {0}; i < 255; i+=2){
       analogWrite(SERVO, i);
       delay(10UL);
@@ -35,6 +35,7 @@ void loop() {
         analogWrite(SERVO, i);
         delay(10UL);
       }
+    }else{
+      analogWrite(SERVO, LOW);
     }
-
 }
