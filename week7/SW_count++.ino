@@ -3,10 +3,10 @@ enum LED{
   GREEN,
   BLUE
 };
-
 const uint8_t SW1 {40U};
 
 static int count {0};
+
 bool state = false;
 
 void setup() {
@@ -23,19 +23,33 @@ void loop() {
 
   if (SW_value && !state){
     count++;
-    state = true; 
+    Serial.println(count);
+    state = true;
+    if(count >= 5) count = 1; // 3 이상일 경우 0으로 초기화하여 무한 순환
+    
+    switch(count) {
+      case 1:
+        digitalWrite(RED, HIGH);
+        digitalWrite(GREEN, LOW);
+        digitalWrite(BLUE, LOW);
+        break;
+      case 2:
+        digitalWrite(RED, LOW);
+        digitalWrite(GREEN, HIGH);
+        digitalWrite(BLUE, LOW);
+        break;
+      case 3:
+        digitalWrite(RED, LOW);
+        digitalWrite(GREEN, LOW);
+        digitalWrite(BLUE, HIGH);
+        break;
+      case 4:
+        digitalWrite(RED, LOW);
+        digitalWrite(GREEN, LOW);
+        digitalWrite(BLUE, LOW);
+    }
   }
   else if (!SW_value && state) {
     state = false;
   }
-  Serial.println(count);
-
-  if(count % 2 == 0){
-    analogWrite(RED,100);
-    analogWrite(BLUE,100);
-  }else{
-    analogWrite(RED,0);
-    analogWrite(BLUE,0);
-  }
-
 }
