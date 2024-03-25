@@ -9,7 +9,7 @@ void setup() {
 
 void loop() {
   // peut your main code here, to run repeatedly:
-  if(Serial1.available()){. // bluetooth 값이 들어오면
+  if(Serial1.available()){ // bluetooth 값이 들어오면
     char input_value = static_cast<char>(Serial1.read());
     if(input_value == '1'){
       digitalWrite(RSW, HIGH);
