@@ -23,6 +23,20 @@ void setup() {
   pinMode(SERVO, OUTPUT);
 }
 
+void moveServo(bool open) {
+  if (open) {
+    for (int i = 0; i < 255; i += 10){
+      analogWrite(SERVO, i);
+      delay(10UL);
+    }
+  } else {
+    for (int i = 255; i >= 0; i -= 10){
+      analogWrite(SERVO, i);
+      delay(10UL);
+    }
+  }
+}
+
 void loop() {
   if(dht.read()) {
     float temperature = dht.readTemperature();
@@ -34,10 +48,7 @@ void loop() {
       delay(500UL);
       lcd.clear();
       lcd.setCursor(0,0);
-      for(int i = 0; i < 255; i += 10){
-        analogWrite(SERVO, i);
-        delay(10UL);
-      }
+      moveServo(true);
       open = true;
 
     } else if(distance >= 0 && distance <= 20.0F && open) {
@@ -47,10 +58,7 @@ void loop() {
       delay(500UL);
       lcd.clear();
       lcd.setCursor(0, 0);
-      for(int i = 255; i >= 0; i -= 10){
-        analogWrite(SERVO, i);
-        delay(10UL);
-      }
+      moveServo(false);
       open = false;
     }
   }
