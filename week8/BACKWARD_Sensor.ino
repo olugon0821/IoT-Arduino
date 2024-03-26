@@ -29,58 +29,58 @@ void loop() {
     float distance = ul_sn.measureDistanceCm(temperature);
     if(distance >= 100 and distance <= 400.0F){
       Serial.println(F("Out of Ranges"));
-    }else if(distance >= 50.0F and distance <= 99.0F){
+    }else if(distance >= 50.0F and distance <= 99.9F){
       Serial.println(F("distance : "));
       Serial.println(distance + String(" CM"));
-      tone(BUZZ,200);
-      delay(200UL);
-      noTone(BUZZ);
+      tone(BUZZ,700);
       delay(500UL);
+      noTone(BUZZ);
+      delay(100UL);
       
 
-    }else if(distance >=30.0F and distance <= 49.0F){
+    }else if(distance >=30.0F and distance <= 49.9F){
       Serial.println(F("distance : "));
       Serial.println(distance + String(" CM"));
-      tone(BUZZ,200);
-      delay(200UL);
-      noTone(BUZZ);
+      tone(BUZZ,600);
       delay(250UL);
+      noTone(BUZZ);
+      delay(100UL);
 
-    }else if(distance >=20.0F and distance <= 29.0F){
+
+    }else if(distance >=20.0F and distance <= 29.9F){
       Serial.println(F("distance : "));
       Serial.println(distance + String(" CM"));
-      tone(BUZZ,200);
-      delay(200UL);
-      noTone(BUZZ);
+      tone(BUZZ,500);
       delay(125UL);
+      noTone(BUZZ);
+      delay(100UL);
+
       
-    }else if(10.0F <= distance and distance <= 19.0F){
+    }else if(distance >= 10.0F and distance <= 19.9F){
       Serial.println(F("distance : "));
       Serial.println(distance + String(" CM"));
-      tone(BUZZ,200);
-      delay(200UL);
-      noTone(BUZZ);
+      tone(BUZZ,400);
       delay(70UL);
+      noTone(BUZZ);
+      delay(100UL);
 
-    }else if(5.0F <= distance and distance <= 9.9F){
+
+    }else if(distance >= 5.0F and distance <= 9.9F){
       Serial.println(F("distance : "));
       Serial.println(distance + String(" CM"));
-      tone(BUZZ,200);
-      delay(200UL);
-      noTone(BUZZ);
+      tone(BUZZ,300);
       delay(35UL);
+      noTone(BUZZ);
+      delay(100UL);
 
-    }else if(0F <= distance and distance <= 4.9F){
+    }else if(distance >= 0.0F and distance <= 4.9F){
       Serial.println(F("distance : "));
       Serial.println(distance + String(" CM"));
       tone(BUZZ,200);
-      delay(200UL);
+      delay(15UL);
       noTone(BUZZ);
-      delay(20UL);
+      delay(100UL);
 
     }
-  
-  delay(500UL);
   }
- 
 }
