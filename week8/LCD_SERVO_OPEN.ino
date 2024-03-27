@@ -41,23 +41,22 @@ void loop() {
   if(dht.read()) {
     float temperature = dht.readTemperature();
     float distance = ul_sn.measureDistanceCm(temperature);
+    lcd.setCursor(0,0);
+    lcd.print(distance);
+    delay(500UL);
     
     if(distance > 20.0F && !open) {
       lcd.setCursor(0,1);
       lcd.print("Welcome");
-      delay(500UL);
-      lcd.clear();
-      lcd.setCursor(0,0);
+      delay(10UL);
       moveServo(true);
       open = true;
 
     } else if(distance >= 0 && distance <= 20.0F && open) {
-      lcd.print(distance);
+      lcd.clear();
       lcd.setCursor(0,1);
       lcd.print("PASS");
-      delay(500UL);
-      lcd.clear();
-      lcd.setCursor(0, 0);
+      delay(10UL);
       moveServo(false);
       open = false;
     }
