@@ -1,0 +1,4 @@
+SDA = 53
+MOSI = 51
+MISO = 50
+SCK = 52
