@@ -36,10 +36,10 @@ const String MASTER_CARD {String("C2A72B1B")};
 class IRrecv irrecv(IR);
 class decode_results result; // 디폴트 생성자
 
+bool UID_Checking = false;
 bool PIR_state = false;
 bool function_state = false;
-bool UID_Checking = false;
-
+bool PIR_count = false;
 
 void setup() {
   // put your setup code here, to run once:
@@ -54,11 +54,12 @@ void setup() {
   pinMode(RGB_GREEN, OUTPUT);
   pinMode(RGB_BLUE, OUTPUT);
   irrecv.begin(IR, SERVO); // SERVO를 출력용으로 사용  lcd.setCursor(1,0);
-
+  
   lcd.setCursor(1,0);
   lcd.print("HELLO, WELCOME");
   lcd.setCursor(4,1);
   lcd.print("Entrance");
+  
 }
 
 void loop() {
@@ -69,7 +70,7 @@ void loop() {
     float heat = dht.computeHeatIndex(temperature, humidity); // 열
     float distance = ul_sn.measureDistanceCm(temperature); // 거리 측정
 
-    LCD_FUNC();
+    main_LCD();
 
     if(!mfrc522.PICC_IsNewCardPresent()) return;
     if(!mfrc522.PICC_ReadCardSerial()) return;
@@ -97,6 +98,13 @@ void loop() {
       lcd.print("Differance ID");
     }
 }
+
+void main_LCD(){
+  if(!PIR_count){
+    LCD_FUNC();
+  }
+}
+
 // LCD 작동 //
 void LCD_FUNC(){
   bool PIR_value {digitalRead(PIR_SENSOR)};
@@ -121,6 +129,7 @@ void LCD_FUNC(){
       lcd.print("CLOSE");
       stepping.step(-(STEP_REVOLUTION / 4));
       lcd.clear();
+      PIR_count = true;
       Distance();
     }
 }
@@ -140,24 +149,29 @@ void RGB_LED(){
     lcd.print(temperature);
     lcd.setCursor(6,1);
     lcd.print("WARNING!");
+    tone(BUZZ,200);
+    delay(100);
+    noTone(BUZZ);
+    delay(200);
 
   }else if(temperature >=26 and temperature <=29 ){
     digitalWrite(RGB_GREEN,80);
     digitalWrite(RGB_RED,LOW);
     digitalWrite(RGB_BLUE,LOW);
     lcd.clear();
-    lcd.setCursor(4,0);
-    lcd.print(temperature);
+    lcd.setCursor(2,0);
+    lcd.print("temp : "+String(temperature));
     lcd.setCursor(6,1);
     lcd.print("GOOD");
+    UID_CHECK();
 
   }else if(temperature >= 20 and temperature <= 25){
     digitalWrite(RGB_BLUE,80);
     digitalWrite(RGB_GREEN,LOW);
     digitalWrite(RGB_RED,LOW);
     lcd.clear();
-    lcd.setCursor(4,0);
-    lcd.print(temperature);
+    lcd.setCursor(2,0);
+   lcd.print("temp : "+String(temperature));
     lcd.setCursor(6,1);
     lcd.print("GOOD");
     UID_CHECK();
@@ -174,7 +188,7 @@ void Servo_Move(bool UID_Checking) {
         lcd.print("OPEN");
         for (int angle = 0; angle <= 180; angle += 5) {
             analogWrite(SERVO, map(angle, 0, 180, 0, 255));
-            delay(15); 
+            delay(30); 
         }
         delay(1000UL);
         lcd.clear();
@@ -184,9 +198,10 @@ void Servo_Move(bool UID_Checking) {
         lcd.print("CLOSE");
         for (int angle = 180; angle >= 0; angle -= 5) {
             analogWrite(SERVO, map(angle, 0, 180, 0, 255));
-            delay(15); // 서보 모터가 움직이는 속도 조절을 위한 딜레이
+            delay(30); // 서보 모터가 움직이는 속도 조절을 위한 딜레이
         }
     }
+    PIR_count = false;
 }
 
 
@@ -222,7 +237,6 @@ void Distance(){
 
 
 void UID_CHECK(){
-  bool UID_state = false;
   delay(1000UL);
   lcd.clear();
   lcd.setCursor(2,0);
